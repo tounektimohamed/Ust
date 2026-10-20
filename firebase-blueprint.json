@@ -1,0 +1,204 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "System users and club staff with role-based access",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 255 },
+        "displayName": { "type": "string", "maxLength": 128 },
+        "role": { "type": "string", "enum": ["admin", "treasurer", "coach", "viewer"] },
+        "assignedGroupIds": { "type": "array" },
+        "phone": { "type": "string", "maxLength": 32 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "Administrator entry for role-based security validation",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "maxLength": 255 },
+        "addedAt": { "type": "string" }
+      },
+      "required": ["email"]
+    },
+    "Member": {
+      "title": "Member",
+      "description": "Player/Youth member registered with Union Sportive de Tataouine (UST) youth branch",
+      "type": "object",
+      "properties": {
+        "memberNumber": { "type": "string", "maxLength": 64 },
+        "firstName": { "type": "string", "maxLength": 64 },
+        "lastName": { "type": "string", "maxLength": 64 },
+        "photoUrl": { "type": "string", "maxLength": 1000 },
+        "birthDate": { "type": "string", "maxLength": 32 },
+        "phone": { "type": "string", "maxLength": 32 },
+        "parentPhone": { "type": "string", "maxLength": 32 },
+        "address": { "type": "string", "maxLength": 255 },
+        "registrationDate": { "type": "string", "maxLength": 32 },
+        "sport": { "type": "string", "maxLength": 64 },
+        "category": { "type": "string", "maxLength": 64 },
+        "groupId": { "type": "string", "maxLength": 128 },
+        "status": { "type": "string", "enum": ["active", "suspended", "archived"] },
+        "emergencyContact": { "type": "string", "maxLength": 128 },
+        "adminNotes": { "type": "string", "maxLength": 500 },
+        "qrCode": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["memberNumber", "firstName", "lastName", "category", "status"]
+    },
+    "Group": {
+      "title": "Group",
+      "description": "Sports training group/category (e.g., U11, U13, U15, U17)",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 64 },
+        "category": { "type": "string", "maxLength": 64 },
+        "coachIds": { "type": "array" },
+        "scheduleDays": { "type": "string", "maxLength": 128 },
+        "scheduleTime": { "type": "string", "maxLength": 64 },
+        "location": { "type": "string", "maxLength": 128 },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["name", "category"]
+    },
+    "Subscription": {
+      "title": "Subscription",
+      "description": "Member subscription plan and fee status",
+      "type": "object",
+      "properties": {
+        "memberId": { "type": "string", "maxLength": 128 },
+        "memberName": { "type": "string", "maxLength": 128 },
+        "type": { "type": "string", "enum": ["monthly", "quarterly", "semiannual", "annual", "trial"] },
+        "amount": { "type": "number" },
+        "discountType": { "type": "string", "enum": ["percentage", "fixed", "none"] },
+        "discountValue": { "type": "number" },
+        "finalAmount": { "type": "number" },
+        "paidAmount": { "type": "number" },
+        "remainingAmount": { "type": "number" },
+        "startDate": { "type": "string", "maxLength": 32 },
+        "endDate": { "type": "string", "maxLength": 32 },
+        "status": { "type": "string", "enum": ["active", "expired", "suspended", "trial"] },
+        "paymentStatus": { "type": "string", "enum": ["paid", "partial", "unpaid"] },
+        "notes": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["memberId", "type", "finalAmount", "startDate", "endDate", "status"]
+    },
+    "Payment": {
+      "title": "Payment",
+      "description": "Payment receipt record matching the official UST youth section receipt stub",
+      "type": "object",
+      "properties": {
+        "receiptNumber": { "type": "string", "maxLength": 64 },
+        "subscriptionId": { "type": "string", "maxLength": 128 },
+        "memberId": { "type": "string", "maxLength": 128 },
+        "memberName": { "type": "string", "maxLength": 128 },
+        "amount": { "type": "number" },
+        "paymentMethod": { "type": "string", "enum": ["cash", "transfer", "check", "other"] },
+        "paymentDate": { "type": "string", "maxLength": 32 },
+        "receiverName": { "type": "string", "maxLength": 128 },
+        "status": { "type": "string", "enum": ["valid", "cancelled"] },
+        "cancellationReason": { "type": "string", "maxLength": 255 },
+        "notes": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["receiptNumber", "memberId", "amount", "paymentDate", "status"]
+    },
+    "Attendance": {
+      "title": "Attendance",
+      "description": "Attendance record for a player in a training session via manual check or QR code",
+      "type": "object",
+      "properties": {
+        "groupId": { "type": "string", "maxLength": 128 },
+        "groupName": { "type": "string", "maxLength": 64 },
+        "sessionDate": { "type": "string", "maxLength": 32 },
+        "sessionTime": { "type": "string", "maxLength": 32 },
+        "memberId": { "type": "string", "maxLength": 128 },
+        "memberName": { "type": "string", "maxLength": 128 },
+        "memberNumber": { "type": "string", "maxLength": 64 },
+        "status": { "type": "string", "enum": ["present", "absent", "late", "excused", "unexcused"] },
+        "method": { "type": "string", "enum": ["manual", "qr"] },
+        "recordedBy": { "type": "string", "maxLength": 128 },
+        "notes": { "type": "string", "maxLength": 255 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["groupId", "sessionDate", "memberId", "status", "method"]
+    },
+    "Expense": {
+      "title": "Expense",
+      "description": "Club / youth branch operational expenses",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 128 },
+        "amount": { "type": "number" },
+        "category": { "type": "string", "maxLength": 64 },
+        "date": { "type": "string", "maxLength": 32 },
+        "recordedBy": { "type": "string", "maxLength": 128 },
+        "notes": { "type": "string", "maxLength": 255 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["title", "amount", "date"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "Audit trail for key events, payment corrections and attendance edits",
+      "type": "object",
+      "properties": {
+        "action": { "type": "string", "maxLength": 64 },
+        "entity": { "type": "string", "maxLength": 64 },
+        "entityId": { "type": "string", "maxLength": 128 },
+        "details": { "type": "string", "maxLength": 500 },
+        "performedBy": { "type": "string", "maxLength": 128 },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["action", "entity", "performedBy", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Club administrators, coaches, and staff profiles"
+    },
+    "/admins/{adminId}": {
+      "schema": "Admin",
+      "description": "Designated club administrators"
+    },
+    "/members/{memberId}": {
+      "schema": "Member",
+      "description": "Youth section registered members / players"
+    },
+    "/groups/{groupId}": {
+      "schema": "Group",
+      "description": "Age categories and training groups"
+    },
+    "/subscriptions/{subscriptionId}": {
+      "schema": "Subscription",
+      "description": "Membership subscription records"
+    },
+    "/payments/{paymentId}": {
+      "schema": "Payment",
+      "description": "Official receipt payments for UST youth branch"
+    },
+    "/attendance/{attendanceId}": {
+      "schema": "Attendance",
+      "description": "Session attendance logs"
+    },
+    "/expenses/{expenseId}": {
+      "schema": "Expense",
+      "description": "Branch expenses and equipment log"
+    },
+    "/audit_logs/{logId}": {
+      "schema": "AuditLog",
+      "description": "Audit trails for operations"
+    }
+  }
+}

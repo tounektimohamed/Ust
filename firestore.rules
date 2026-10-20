@@ -1,0 +1,73 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        request.auth.token.email == 'tounekti2020@gmail.com'
+      );
+    }
+
+    // System configurations & admin auth state
+    match /system/{docId} {
+      allow read, write: if true;
+    }
+
+    // Admins collection
+    match /admins/{adminId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // Users / Staff profiles
+    match /users/{userId} {
+      allow read, write: if true;
+    }
+
+    // Coaches collection
+    match /coaches/{coachId} {
+      allow read, write: if true;
+    }
+
+    // Members (Youth players)
+    match /members/{memberId} {
+      allow read, write: if true;
+    }
+
+    // Training Groups
+    match /groups/{groupId} {
+      allow read, write: if true;
+    }
+
+    // Subscriptions
+    match /subscriptions/{subscriptionId} {
+      allow read, write: if true;
+    }
+
+    // Official Payments & Receipts
+    match /payments/{paymentId} {
+      allow read, write: if true;
+    }
+
+    // Attendance records
+    match /attendance/{attendanceId} {
+      allow read, write: if true;
+    }
+
+    // Expenses
+    match /expenses/{expenseId} {
+      allow read, write: if true;
+    }
+
+    // Audit logs
+    match /audit_logs/{logId} {
+      allow read, create: if true;
+      allow update, delete: if false;
+    }
+  }
+}

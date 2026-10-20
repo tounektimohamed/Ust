@@ -1,0 +1,10 @@
+{
+  "name": "الاتحاد الرياضي بتطاوين - فرع الشبان",
+  "description": "المنظومة الرقمية الرسمية لإدارة أنشطة واشتراكات وحضور فرع الشبان للاتحاد الرياضي بتطاوين (UST)",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
